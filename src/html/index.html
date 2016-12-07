@@ -1,0 +1,50 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Firebase notifs</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Notif page</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
+    <!--<script>-->
+        <!--(function() {-->
+            <!--Push.create('Hello World!');-->
+        <!--})();-->
+    <!--</script>-->
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "",
+            authDomain: "",
+            databaseURL: "",
+            storageBucket: "",
+            messagingSenderId: ""
+        };
+        firebase.initializeApp(config);
+        var messaging = firebase.messaging();
+
+        messaging.requestPermission()
+            .then(function() {
+                console.log('Notification permission granted.');
+
+                return messaging.getToken();
+            })
+            .then(function(token) {
+                console.log(token);
+                // envoyer le token à l'url "/topic-subscription" en spécifiant dans le post { token: leToken, topic: "groupe de notification" }
+            })
+            .catch(function(err) {
+                console.log('Unable to get permission to notify.', err);
+            });
+
+        messaging.onMessage(function(payload) {
+           console.log('onMessage: ', payload);
+        });
+    </script>
+</body>
+</html>
